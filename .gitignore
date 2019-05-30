@@ -1,6 +1,7 @@
 
 .springBeans
 .classpath
+.tern-project
 .project
 .settings/*
 target/*
