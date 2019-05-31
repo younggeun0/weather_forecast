@@ -14,12 +14,6 @@ public class ForecastController {
 			return "redirect:index.do?flag=weather";
 		}
 	
-		if ("weather".equals(flag)) {
-			
-		} else if ("matter".equals(flag)) {
-			
-		}
-		
 		return "main";
 	}
 }
