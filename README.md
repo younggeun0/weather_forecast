@@ -7,14 +7,11 @@
   
 ## UI 설계
 
-<center>
 ![01](https://github.com/younggeun0/younggeun0.github.io/blob/master/_posts/img/toyProjects/weather_forecast/01.png?raw=true)
 
 ![02](https://github.com/younggeun0/younggeun0.github.io/blob/master/_posts/img/toyProjects/weather_forecast/02.png?raw=true)
-</center>
 
 ## 시연
 
-<center>
 ![03](https://github.com/younggeun0/younggeun0.github.io/blob/master/_posts/img/toyProjects/weather_forecast/03.gif?raw=true)
-</center>
+
