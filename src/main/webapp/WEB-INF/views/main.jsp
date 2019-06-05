@@ -15,14 +15,33 @@
 	$(function() {
 		
 		if(${param.flag eq 'matter'}) { // 미세먼지정보 조회
-			
-			alert("미세먼지 정보를 가져옵니다");
-		
+			$.ajax({
+				url:"http://localhost:8080/younggeun0/matter_api.jsp",
+				type:"get",
+				async:"true",
+				error:function(xhr) {
+					console.log(xhr);
+					alert("에러코드 : "+xhr.status+", 에러메시지 : "+xhr.statusText);
+				},
+				success:function(json) {
+					var date = json.substring(json.indexOf("searchDate")+13,json.indexOf("serviceKey")-3);
+					$(".time").text(date);
+
+					var general = json.substring(json.indexOf("미세먼지")+6,json.indexOf("PM10")-17);
+					$(".general").text(general);
+					
+					var pm10 = json.substring(json.indexOf("PM10")+47,json.indexOf("PM10")+202);
+					$("#pm10").html("&nbsp;"+pm10);
+					
+					var pm25 = json.substring(json.indexOf("PM25")+47,json.indexOf("PM25")+202);
+					$("#pm25").html("&nbsp;"+pm25);
+					
+					var o3 = json.substring(json.indexOf("O3")+45,json.indexOf("O3")+200);
+					$("#o3").html("&nbsp;"+o3);
+				}
+			});
 		
 		} else { // 미세먼지 선택하지 않았을 시 항상 기상정보 조회
-			alert("기상 정보를 가져옵니다");
-		
-			// 사용후 serviceKey 지울 것(github 올릴 때)
 			$.ajax({
 				url:"http://localhost:8080/younggeun0/weather_api.jsp",
 				type:"get",
@@ -40,10 +59,10 @@
 					var hour = date.substring(8,10);
 					
 					var time = year+"-"+month+"-"+day+", "+hour+"시 관측";
-					$("#time").text(time);
+					$(".time").text(time);
 
 					var general = json.substring(json.indexOf("(종합) ")+5, json.indexOf("(오늘)")-6);
-					$("#general").html("&nbsp;"+general);
+					$(".general").html("&nbsp;"+general);
 					
 					var today = json.substring(json.indexOf("(오늘) ")+5, json.indexOf("(내일)")-6);
 					$("#today").html("&nbsp;"+today);
@@ -83,10 +102,10 @@
 		<div class="card rounded">
 			<div class="card-body">
 				<h5 class="card-title">기상 정보 🌞</h5>
-				<h6 class="card-subtitle mb-2 text-muted">시간 : <span id="time"></span></h6>
+				<h6 class="card-subtitle mb-2 text-muted">시간 : <span class="time"></span></h6>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">종합</h6>
-				<p id="general" class="card-text"></p>
+				<p class="general" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">오늘</h6>
 				<p id="today" class="card-text"></p>
@@ -108,21 +127,20 @@
 		<div class="card rounded">
 			<div class="card-body">
 				<h5 class="card-title">미세먼지 정보😷</h5>
-				<h6 class="card-subtitle mb-2 text-muted">시간 : 2019-05-27 17시</h6>
+				<h6 class="card-subtitle mb-2 text-muted">시간 : <span class="time"></span></h6>
+				<br/>
+				<h6 class="card-subtitle mb-2 text-muted">종합</h6>
+				<p class="general" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">미세먼지(PM10)</h6>
-				<p class="card-text">전 권역이 &#039;좋음&#039;∼&#039;보통&#039;으로 예상됨.</p>
 				<!-- 좋음, 보통, 나쁨 결과에 따라 다른 이미지를 보여주도록 변경 예정 -->
-				<p class="card-text">서울 : 좋음, 제주 : 좋음,전남 : 좋음,전북 : 좋음,광주 : 좋음,경남 : 좋음,경북 : 좋음,울산 : 좋음,대구 : 좋음,부산 : 보통,충남 : 좋음,충북 : 좋음,세종 : 좋음,대전 : 좋음,영동 : 좋음,영서 : 좋음,경기남부 : 좋음,경기북부 : 좋음,인천 : 좋음</p>
+				<p id="pm10" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">초미세먼지(PM2.5)</h6>
-				<p class="card-text">전 권역이 &#039;좋음&#039;∼&#039;보통&#039;으로 예상됨.</p>
-				<p class="card-text">서울 : 보통,제주 : 좋음,전남 : 좋음,전북 : 좋음,광주 : 좋음,경남 : 좋음,경북 : 좋음,울산 : 보통,대구 : 좋음,부산 : 보통,충남 : 좋음,충북 : 좋음,세종 : 좋음,대전 : 좋음,영동 : 좋음,영서 : 좋음,경기남부 : 좋음,경기북부 : 좋음,인천 : 좋음</p>
+				<p id="pm25" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">오존(O3)</h6>
-				<p class="card-text">전 권역이 &#039;보통&#039;으로 예상됨.</p>
-				<p class="card-text">서울 : 보통,제주 : 보통,전남 : 보통,전북 : 보통,광주 : 보통,경남 : 보통,경북 : 보통,울산 : 보통,대구 : 보통,부산 : 보통,충남 : 보통,충북 : 보통,세종 : 보통,대전 : 보통,영동 : 보통,영서 : 보통,경기남부 : 보통,경기북부 : 보통,인천 : 보통</p>
-				<br/>
+				<p id="o3" class="card-text"></p>
 			</div>
 		</div>
 		</c:if>
