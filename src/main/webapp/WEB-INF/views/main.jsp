@@ -32,10 +32,30 @@
 					alert("에러코드 : "+xhr.status+", 에러메시지 : "+xhr.statusText);
 				},
 				success:function(json) {
-					console.log(json);
-					// json 데이터를 파싱해서
-					// 적절한 위치에 값을 입력해줘야 함
-					alert(json.substring(json.indexOf("합) "), json.indexOf("\n  ○")));
+					var date = json.substring(json.indexOf("tmFc")+6,json.indexOf("wfSv1")-4);
+					
+					var year = date.substring(0,4);
+					var month = date.substring(4,6);
+					var day = date.substring(6,8);
+					var hour = date.substring(8,10);
+					
+					var time = year+"-"+month+"-"+day+", "+hour+"시 관측";
+					$("#time").text(time);
+
+					var general = json.substring(json.indexOf("(종합) ")+5, json.indexOf("(오늘)")-6);
+					$("#general").html("&nbsp;"+general);
+					
+					var today = json.substring(json.indexOf("(오늘) ")+5, json.indexOf("(내일)")-6);
+					$("#today").html("&nbsp;"+today);
+					
+					var tomorrow = json.substring(json.indexOf("(내일) ")+5, json.indexOf("(모레)")-6);
+					$("#tomorrow").html("&nbsp;"+tomorrow);
+					
+					var dayAfterTomorrow = json.substring(json.indexOf("(모레) ")+5, json.indexOf("예상 강수량")-7);
+					$("#dayAfterTomorrow").html("&nbsp;"+dayAfterTomorrow);
+					
+					var temperature = json.substring(json.indexOf("(기온) ")+5, json.indexOf("(안개)")-6);
+					$("#temperature").html("&nbsp;"+temperature);
 				}
 			});
 		}
@@ -45,7 +65,7 @@
 <body>
 	<div class="container" style="width: 50%">
 		<nav id="navbar-example2" class="navbar navbar-light bg-light rounded">
-			<a class="navbar-brand" href="#"><strong>Youngs Weather Forecast😎</strong></a>
+			<a class="navbar-brand" href="index.do"><strong>Youngs Weather Forecast😎</strong></a>
 			<ul class="nav nav-pills">
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
@@ -62,36 +82,23 @@
 		<c:if test="${ param.flag eq 'weather' }">
 		<div class="card rounded">
 			<div class="card-body">
-				<h5 class="card-title">기상 정보🌞</h5>
+				<h5 class="card-title">기상 정보 🌞</h5>
+				<h6 class="card-subtitle mb-2 text-muted">시간 : <span id="time"></span></h6>
+				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">종합</h6>
-				<p class="card-text">Some quick example text to build on the
-					card title and make up the bulk of the card's content.</p>
+				<p id="general" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">오늘</h6>
-				<p class="card-text">Some quick example text to build on the
-					card title and make up the bulk of the card's content.</p>
+				<p id="today" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">내일</h6>
-				<p class="card-text">Some quick example text to build on the
-					card title and make up the bulk of the card's content.</p>
+				<p id="tomorrow" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">모레</h6>
-				<p class="card-text">Some quick example text to build on the
-					card title and make up the bulk of the card's content.</p>
+				<p id="dayAfterTomorrow" class="card-text"></p>
 				<br/>
-				<h6 class="card-subtitle mb-2 text-muted">강풍</h6>
-				<p class="card-text">Some quick example text to build on the
-					card title and make up the bulk of the card's content.</p>
-				<br/>
-				<h6 class="card-subtitle mb-2 text-muted">건조</h6>
-				<p class="card-text">Some quick example text to build on the
-					card title and make up the bulk of the card's content.</p>
-				<br/>
-				<h6 class="card-subtitle mb-2 text-muted">해상</h6>
-				<p class="card-text">Some quick example text to build on the
-					card title and make up the bulk of the card's content.</p>
-				<!-- <a href="#" class="card-link">Card link</a> <a href="#"
-					class="card-link">Another link</a> -->
+				<h6 class="card-subtitle mb-2 text-muted">기온</h6>
+				<p id="temperature" class="card-text"></p>
 			</div>
 		</div>
 		</c:if>
