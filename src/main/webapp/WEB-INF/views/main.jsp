@@ -23,29 +23,22 @@
 			alert("기상 정보를 가져옵니다");
 		
 			// 사용후 serviceKey 지울 것(github 올릴 때)
-			var serviceKey = "UqRK5kyLPwv4EOwwoxQcbuQpJt0hyw1haTQ0RN6XgYXqlcoGllsG%2BjgToVZKp0wNkKdqmoeM%2FHf300SiLA%2Fe1Q%3D%3D";
-			var queryString = "ServiceKey="+serviceKey+"&stnId=108&_type=json";
-			var url = "http://newsky2.kma.go.kr/service/VilageFrcstDspthDocInfoService/WidGeneralWeatherCondition";
-			
-			alert(queryString);
-			
 			$.ajax({
-				url:url,
+				url:"http://localhost:8080/younggeun0/weather_api.jsp",
 				type:"get",
 				async:"true",
-				data:queryString,
-				dataType:"json",
 				error:function(xhr) {
+					console.log(xhr);
 					alert("에러코드 : "+xhr.status+", 에러메시지 : "+xhr.statusText);
 				},
 				success:function(json) {
+					console.log(json);
 					// json 데이터를 파싱해서
 					// 적절한 위치에 값을 입력해줘야 함
-					alert("성공쓰");
+					alert(json.substring(json.indexOf("합) "), json.indexOf("\n  ○")));
 				}
 			});
 		}
-		
 	});
 </script>
 </head>
