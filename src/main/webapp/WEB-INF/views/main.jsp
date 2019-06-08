@@ -14,10 +14,20 @@
 <script type="text/javascript">
 	$(function() {
 		
+		var date = new Date();
+		
+		// 2019-00-00 형태로 바꿈
+		searchDate = date.getFullYear()+"-"
+			+(date.getMonth() < 10 ? "0"+(date.getMonth()+1) : date.getMonth())+"-"
+			+(date.getDate() < 10 ? "0"+date.getDate() : date.getDate());
+		
+		console.log("param으로 보낼 꺼 : "+searchDate);
+		
 		if(${param.flag eq 'matter'}) { // 미세먼지정보 조회
 			$.ajax({
 				url:"http://localhost:8080/younggeun0/matter_api.jsp",
 				type:"get",
+				data:"searchDate="+searchDate,
 				async:"true",
 				error:function(xhr) {
 					console.log(xhr);
