@@ -21,7 +21,7 @@
 			+(date.getMonth() < 10 ? "0"+(date.getMonth()+1) : date.getMonth())+"-"
 			+(date.getDate() < 10 ? "0"+date.getDate() : date.getDate());
 		
-		console.log("param으로 보낼 꺼 : "+searchDate);
+		// console.log("param으로 보낼 꺼 : "+searchDate);
 		
 		if(${param.flag eq 'matter'}) { // 미세먼지정보 조회
 			$.ajax({
@@ -35,12 +35,12 @@
 					alert("에러코드 : "+xhr.status+", 에러메시지 : "+xhr.statusText);
 				},
 				success:function(json) {
-					console.log(json.list);
+					// console.log(json.list);
 					
 					var date = json.list[0].dataTime; // time
 					$(".time").text(date);
 					
-					var overall = json.list[0].informOverall; // overall
+					var overall = json.list[0].informOverall.substring(9); // overall
 					$(".overall").text(overall);
 					
 					var pm10 = json.list[0].informGrade; // pm10
