@@ -28,25 +28,28 @@
 				url:"http://localhost:8080/younggeun0/matter_api.jsp",
 				type:"get",
 				data:"searchDate="+searchDate,
+				dataType:"json",
 				async:"true",
 				error:function(xhr) {
 					console.log(xhr);
 					alert("에러코드 : "+xhr.status+", 에러메시지 : "+xhr.statusText);
 				},
 				success:function(json) {
-					var date = json.substring(json.indexOf("searchDate")+13,json.indexOf("serviceKey")-3);
-					$(".time").text(date);
-
-					var general = json.substring(json.indexOf("미세먼지")+6,json.indexOf("PM10")-17);
-					$(".general").text(general);
+					console.log(json.list);
 					
-					var pm10 = json.substring(json.indexOf("PM10")+47,json.indexOf("PM10")+202);
+					var date = json.list[0].dataTime; // time
+					$(".time").text(date);
+					
+					var overall = json.list[0].informOverall; // overall
+					$(".overall").text(overall);
+					
+					var pm10 = json.list[0].informGrade; // pm10
 					$("#pm10").html("&nbsp;"+pm10);
 					
-					var pm25 = json.substring(json.indexOf("PM25")+47,json.indexOf("PM25")+202);
+					var pm25 = json.list[2].informGrade; // pm25
 					$("#pm25").html("&nbsp;"+pm25);
-					
-					var o3 = json.substring(json.indexOf("O3")+45,json.indexOf("O3")+200);
+
+					var o3 = json.list[4].informGrade; // o3
 					$("#o3").html("&nbsp;"+o3);
 				}
 			});
@@ -71,8 +74,8 @@
 					var time = year+"-"+month+"-"+day+", "+hour+"시 관측";
 					$(".time").text(time);
 
-					var general = json.substring(json.indexOf("(종합) ")+5, json.indexOf("(오늘)")-6);
-					$(".general").html("&nbsp;"+general);
+					var overall = json.substring(json.indexOf("(종합) ")+5, json.indexOf("(오늘)")-6);
+					$(".overall").html("&nbsp;"+overall);
 					
 					var today = json.substring(json.indexOf("(오늘) ")+5, json.indexOf("(내일)")-6);
 					$("#today").html("&nbsp;"+today);
@@ -80,11 +83,8 @@
 					var tomorrow = json.substring(json.indexOf("(내일) ")+5, json.indexOf("(모레)")-6);
 					$("#tomorrow").html("&nbsp;"+tomorrow);
 					
-					var dayAfterTomorrow = json.substring(json.indexOf("(모레) ")+5, json.indexOf("예상 강수량")-7);
+					var dayAfterTomorrow = json.substring(json.indexOf("(모레) ")+5, json.indexOf("예상 강수량")-6);
 					$("#dayAfterTomorrow").html("&nbsp;"+dayAfterTomorrow);
-					
-					var temperature = json.substring(json.indexOf("(기온) ")+5, json.indexOf("(안개)")-6);
-					$("#temperature").html("&nbsp;"+temperature);
 				}
 			});
 		}
@@ -115,7 +115,7 @@
 				<h6 class="card-subtitle mb-2 text-muted">시간 : <span class="time"></span></h6>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">종합</h6>
-				<p class="general" class="card-text"></p>
+				<p class="overall" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">오늘</h6>
 				<p id="today" class="card-text"></p>
@@ -125,9 +125,6 @@
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">모레</h6>
 				<p id="dayAfterTomorrow" class="card-text"></p>
-				<br/>
-				<h6 class="card-subtitle mb-2 text-muted">기온</h6>
-				<p id="temperature" class="card-text"></p>
 			</div>
 		</div>
 		</c:if>
@@ -140,7 +137,7 @@
 				<h6 class="card-subtitle mb-2 text-muted">시간 : <span class="time"></span></h6>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">종합</h6>
-				<p class="general" class="card-text"></p>
+				<p class="overall" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">미세먼지(PM10)</h6>
 				<!-- 좋음, 보통, 나쁨 결과에 따라 다른 이미지를 보여주도록 변경 예정 -->
