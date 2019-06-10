@@ -21,39 +21,8 @@
 			+(date.getMonth() < 10 ? "0"+(date.getMonth()+1) : date.getMonth())+"-"
 			+(date.getDate() < 10 ? "0"+date.getDate() : date.getDate());
 		
-		// console.log("param으로 보낼 꺼 : "+searchDate);
-		
 		if(${param.flag eq 'matter'}) { // 미세먼지정보 조회
-			$.ajax({
-				url:"http://localhost:8080/younggeun0/matter_api.jsp",
-				type:"get",
-				data:"searchDate="+searchDate,
-				dataType:"json",
-				async:"true",
-				error:function(xhr) {
-					console.log(xhr);
-					alert("에러코드 : "+xhr.status+", 에러메시지 : "+xhr.statusText);
-				},
-				success:function(json) {
-					// console.log(json.list);
-					
-					var date = json.list[0].dataTime; // time
-					$(".time").text(date);
-					
-					var overall = json.list[0].informOverall.substring(9); // overall
-					$(".overall").text(overall);
-					
-					var pm10 = json.list[0].informGrade; // pm10
-					$("#pm10").html("&nbsp;"+pm10);
-					
-					var pm25 = json.list[2].informGrade; // pm25
-					$("#pm25").html("&nbsp;"+pm25);
-
-					var o3 = json.list[4].informGrade; // o3
-					$("#o3").html("&nbsp;"+o3);
-				}
-			});
-		
+			checkMatter();
 		} else { // 미세먼지 선택하지 않았을 시 항상 기상정보 조회
 			$.ajax({
 				url:"http://localhost:8080/younggeun0/weather_api.jsp",
@@ -77,18 +46,54 @@
 					var overall = json.substring(json.indexOf("(종합) ")+5, json.indexOf("(오늘)")-6);
 					$(".overall").html("&nbsp;"+overall);
 					
-					var today = json.substring(json.indexOf("(오늘) ")+5, json.indexOf("(내일)")-6);
+					var today = json.substring(json.indexOf("(오늘) ")+5, json.indexOf("(내일")-6);
 					$("#today").html("&nbsp;"+today);
 					
 					var tomorrow = json.substring(json.indexOf("(내일) ")+5, json.indexOf("(모레)")-6);
 					$("#tomorrow").html("&nbsp;"+tomorrow);
 					
-					var dayAfterTomorrow = json.substring(json.indexOf("(모레) ")+5, json.indexOf("예상 강수량")-6);
+					var dayAfterTomorrow = json.substring(json.indexOf("모레) ")+5, json.indexOf("예상 강수량")-6);
 					$("#dayAfterTomorrow").html("&nbsp;"+dayAfterTomorrow);
 				}
 			});
 		}
+		
+		
+		
+		
 	});
+	
+	function checkMatter() {
+		$.ajax({
+			url:"http://localhost:8080/younggeun0/matter_api.jsp",
+			type:"get",
+			data:"searchDate="+searchDate,
+			dataType:"json",
+			async:"true",
+			error:function(xhr) {
+				console.log(xhr);
+				alert("에러코드 : "+xhr.status+", 에러메시지 : "+xhr.statusText);
+			},
+			success:function(json) {
+				// console.log(json.list);
+				
+				var date = json.list[0].dataTime; // time
+				$(".time").text(date);
+				
+				var overall = json.list[0].informOverall.substring(9); // overall
+				$(".overall").text(overall);
+				
+				var pm10 = json.list[0].informGrade; // pm10
+				$("#pm10").html("&nbsp;"+pm10);
+				
+				var pm25 = json.list[2].informGrade; // pm25
+				$("#pm25").html("&nbsp;"+pm25);
+
+				var o3 = json.list[4].informGrade; // o3
+				$("#o3").html("&nbsp;"+o3);
+			}
+		});
+	}
 </script>
 </head>
 <body>
@@ -139,22 +144,52 @@
 				<h6 class="card-subtitle mb-2 text-muted">종합</h6>
 				<p class="overall" class="card-text"></p>
 				<br/>
-				<h6 class="card-subtitle mb-2 text-muted">미세먼지(PM10)</h6>
-				<!-- 좋음, 보통, 나쁨 결과에 따라 다른 이미지를 보여주도록 변경 예정 -->
-				<p id="pm10" class="card-text"></p>
-				<br/>
-				<h6 class="card-subtitle mb-2 text-muted">초미세먼지(PM2.5)</h6>
-				<p id="pm25" class="card-text"></p>
-				<br/>
-				<h6 class="card-subtitle mb-2 text-muted">오존(O3)</h6>
-				<p id="o3" class="card-text"></p>
+				
+				<div class="form-group">
+					<label class="card-subtitle mb-2 text-muted">지역 정보</label>
+					<select class="form-control" id="place">
+					  <option>서울</option>
+					  <option>제주</option>
+					  <option>전남</option>
+					  <option>전북</option>
+					  <option>광주</option>
+					  <option>경남</option>
+					  <option>경북</option>
+					  <option>울산</option>
+					  <option>대구</option>
+					  <option>부산</option>
+					  <option>충남</option>
+					  <option>충북</option>
+					  <option>세종</option>
+					  <option>대전</option>
+					  <option>충북</option>
+					  <option>영동</option>
+					  <option>영서</option>
+					  <option>경기남부</option>
+					  <option>경기북부</option>
+					  <option>인천</option>
+					</select>
+				</div>
+				
+				<table class="table text-center">
+			    <thead class="thead-dark">
+					<tr>
+					  <th scope="col">미세먼지(PM10)</th>
+					  <th scope="col">초미세먼지(PM2.5)</th>
+					  <th scope="col">오존(O3)</th>
+					</tr>
+			    </thead>
+			    <tbody>
+					<tr>
+					  <td id="pm10"></td>
+					  <td id="pm25"></td>
+					  <td id="o3"></td>
+					</tr>
+			  </tbody>
+			  </table>
 			</div>
 		</div>
 		</c:if>
 	</div>
-
-
-
-
 </body>
 </html>
