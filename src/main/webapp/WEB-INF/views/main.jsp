@@ -12,6 +12,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+
+	places = ["서울", "제주", "전남", "전북", "광주", "경남", "경북", "울산", 
+		"대구", "부산", "충남", "충북", "세종", "대전", "영동", "영서", "경기남부", "경기북부", "인천"];
+	
 	$(function() {
 		
 		var date = new Date();
@@ -22,7 +26,7 @@
 			+(date.getDate() < 10 ? "0"+date.getDate() : date.getDate());
 		
 		if(${param.flag eq 'matter'}) { // 미세먼지정보 조회
-			checkMatter();
+			checkMatter(0);
 		} else { // 미세먼지 선택하지 않았을 시 항상 기상정보 조회
 			$.ajax({
 				url:"http://localhost:8080/younggeun0/weather_api.jsp",
@@ -61,37 +65,58 @@
 		$("#place").change(function() {
 			alert($("#place").val());
 			
-			
+			checkMatter($("#place").val());
 		});
 	});
 	
-	function checkMatter() {
+	function checkMatter(idx) {
 		$.ajax({
 			url:"http://localhost:8080/younggeun0/matter_api.jsp",
 			type:"get",
 			data:"searchDate="+searchDate,
 			dataType:"json",
 			async:"true",
-			error:function(xhr) {
+			error:function(xhr){
 				console.log(xhr);
 				alert("에러코드 : "+xhr.status+", 에러메시지 : "+xhr.statusText);
 			},
 			success:function(json) {
-				// console.log(json.list);
-				
 				var date = json.list[0].dataTime; // time
 				$(".time").text(date);
 				
 				var overall = json.list[0].informOverall.substring(9); // overall
 				$(".overall").text(overall);
 				
-				var pm10 = json.list[0].informGrade; // pm10
+				var pm10 = json.list[0].informGrade; 
+				
+				console.log(places[idx]);
+				if (idx == 18) { // 인천(마지막)
+					pm10 = pm10.substring(pm10.indexOf(places[idx])+5);
+				} else if (idx == 17 || idx == 16) { // 경기남부, 북부
+					pm10 = pm10.substring(pm10.indexOf(places[idx])+7, pm10.indexOf(places[parseInt(idx)+1])-1);
+				} else {
+					pm10 = pm10.substring(pm10.indexOf(places[idx])+5, pm10.indexOf(places[parseInt(idx)+1])-1);
+				}
 				$("#pm10").html("&nbsp;"+pm10);
 				
-				var pm25 = json.list[2].informGrade; // pm25
+				var pm25 = json.list[2].informGrade; 
+				if (idx == 18) { // 인천(마지막)
+					pm25 = pm25.substring(pm25.indexOf(places[idx])+5);
+				} else if (idx == 17 || idx == 16) { // 경기남부, 북부
+					pm25 = pm25.substring(pm25.indexOf(places[idx])+7, pm25.indexOf(places[parseInt(idx)+1])-1);
+				} else {
+					pm25 = pm25.substring(pm25.indexOf(places[idx])+5, pm25.indexOf(places[parseInt(idx)+1])-1);
+				}
 				$("#pm25").html("&nbsp;"+pm25);
 
-				var o3 = json.list[4].informGrade; // o3
+				var o3 = json.list[4].informGrade;
+				if (idx == 18) { // 인천(마지막)
+					o3 = o3.substring(o3.indexOf(places[idx])+5);
+				} else if (idx == 17 || idx == 16) { // 경기남부, 북부
+					o3 = o3.substring(o3.indexOf(places[idx])+7, o3.indexOf(places[parseInt(idx)+1])-1);
+				} else {
+					o3 = o3.substring(o3.indexOf(places[idx])+5, o3.indexOf(places[parseInt(idx)+1])-1);
+				}
 				$("#o3").html("&nbsp;"+o3);
 			}
 		});
@@ -150,35 +175,34 @@
 				<div class="form-group">
 					<label class="card-subtitle mb-2 text-muted">지역 정보</label>
 					<select class="form-control" id="place">
-					  <option value="서울">서울</option>
-					  <option value="제주">제주</option>
-					  <option value="전남">전남</option>
-					  <option value="전북">전북</option>
-					  <option value="광주">광주</option>
-					  <option value="경남">경남</option>
-					  <option value="경북">경북</option>
-					  <option value="울산">울산</option>
-					  <option value="대구">대구</option>
-					  <option value="부산">부산</option>
-					  <option value="충남">충남</option>
-					  <option value="충북">충북</option>
-					  <option value="세종">세종</option>
-					  <option value="대전">대전</option>
-					  <option value="충북">충북</option>
-					  <option value="영동">영동</option>
-					  <option value="영서">영서</option>
-					  <option value="경기남부">경기남부</option>
-					  <option value="경기북부">경기북부</option>
-					  <option value="인천">인천</option>
+					  <option value="0">서울</option>
+					  <option value="1">제주</option>
+					  <option value="2">전남</option>
+					  <option value="3">전북</option>
+					  <option value="4">광주</option>
+					  <option value="5">경남</option>
+					  <option value="6">경북</option>
+					  <option value="7">울산</option>
+					  <option value="8">대구</option>
+					  <option value="9">부산</option>
+					  <option value="10">충남</option>
+					  <option value="11">충북</option>
+					  <option value="12">세종</option>
+					  <option value="13">대전</option>
+					  <option value="14">영동</option>
+					  <option value="15">영서</option>
+					  <option value="16">경기남부</option>
+					  <option value="17">경기북부</option>
+					  <option value="18">인천</option>
 					</select>
 				</div>
 				
 				<table class="table text-center">
 			    <thead class="thead-dark">
 					<tr>
-					  <th scope="col">미세먼지(PM10)</th>
-					  <th scope="col">초미세먼지(PM2.5)</th>
-					  <th scope="col">오존(O3)</th>
+					  <th scope="col" style="width:33%">미세먼지(PM10)</th>
+					  <th scope="col" style="width:33%">초미세먼지(PM2.5)</th>
+					  <th scope="col" style="width:33%">오존(O3)</th>
 					</tr>
 			    </thead>
 			    <tbody>
