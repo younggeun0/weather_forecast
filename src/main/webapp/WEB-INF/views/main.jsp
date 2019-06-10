@@ -63,8 +63,6 @@
 		}
 		
 		$("#place").change(function() {
-			alert($("#place").val());
-			
 			checkMatter($("#place").val());
 		});
 	});
@@ -77,7 +75,6 @@
 			dataType:"json",
 			async:"true",
 			error:function(xhr){
-				console.log(xhr);
 				alert("에러코드 : "+xhr.status+", 에러메시지 : "+xhr.statusText);
 			},
 			success:function(json) {
@@ -89,7 +86,6 @@
 				
 				var pm10 = json.list[0].informGrade; 
 				
-				console.log(places[idx]);
 				if (idx == 18) { // 인천(마지막)
 					pm10 = pm10.substring(pm10.indexOf(places[idx])+5);
 				} else if (idx == 17 || idx == 16) { // 경기남부, 북부
