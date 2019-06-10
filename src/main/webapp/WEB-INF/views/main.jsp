@@ -58,9 +58,11 @@
 			});
 		}
 		
-		
-		
-		
+		$("#place").change(function() {
+			alert($("#place").val());
+			
+			
+		});
 	});
 	
 	function checkMatter() {
@@ -148,26 +150,26 @@
 				<div class="form-group">
 					<label class="card-subtitle mb-2 text-muted">지역 정보</label>
 					<select class="form-control" id="place">
-					  <option>서울</option>
-					  <option>제주</option>
-					  <option>전남</option>
-					  <option>전북</option>
-					  <option>광주</option>
-					  <option>경남</option>
-					  <option>경북</option>
-					  <option>울산</option>
-					  <option>대구</option>
-					  <option>부산</option>
-					  <option>충남</option>
-					  <option>충북</option>
-					  <option>세종</option>
-					  <option>대전</option>
-					  <option>충북</option>
-					  <option>영동</option>
-					  <option>영서</option>
-					  <option>경기남부</option>
-					  <option>경기북부</option>
-					  <option>인천</option>
+					  <option value="서울">서울</option>
+					  <option value="제주">제주</option>
+					  <option value="전남">전남</option>
+					  <option value="전북">전북</option>
+					  <option value="광주">광주</option>
+					  <option value="경남">경남</option>
+					  <option value="경북">경북</option>
+					  <option value="울산">울산</option>
+					  <option value="대구">대구</option>
+					  <option value="부산">부산</option>
+					  <option value="충남">충남</option>
+					  <option value="충북">충북</option>
+					  <option value="세종">세종</option>
+					  <option value="대전">대전</option>
+					  <option value="충북">충북</option>
+					  <option value="영동">영동</option>
+					  <option value="영서">영서</option>
+					  <option value="경기남부">경기남부</option>
+					  <option value="경기북부">경기북부</option>
+					  <option value="인천">인천</option>
 					</select>
 				</div>
 				
