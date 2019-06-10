@@ -51,13 +51,13 @@
 					$(".overall").html("&nbsp;"+overall);
 					
 					var today = json.substring(json.indexOf("(오늘) ")+5, json.indexOf("(내일")-6);
-					$("#today").html("&nbsp;"+today);
+					$("#today").html("&nbsp;"+today.replace('\\n', '<br>&nbsp;'));
 					
-					var tomorrow = json.substring(json.indexOf("(내일) ")+5, json.indexOf("(모레)")-6);
+					/* var tomorrow = json.substring(json.indexOf("(내일) ")+5, json.indexOf("(모레)")-6);
 					$("#tomorrow").html("&nbsp;"+tomorrow);
 					
 					var dayAfterTomorrow = json.substring(json.indexOf("모레) ")+5, json.indexOf("예상 강수량")-6);
-					$("#dayAfterTomorrow").html("&nbsp;"+dayAfterTomorrow);
+					$("#dayAfterTomorrow").html("&nbsp;"+dayAfterTomorrow); */
 				}
 			});
 		}
@@ -147,12 +147,12 @@
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">오늘</h6>
 				<p id="today" class="card-text"></p>
-				<br/>
+				<!-- <br/>
 				<h6 class="card-subtitle mb-2 text-muted">내일</h6>
 				<p id="tomorrow" class="card-text"></p>
 				<br/>
 				<h6 class="card-subtitle mb-2 text-muted">모레</h6>
-				<p id="dayAfterTomorrow" class="card-text"></p>
+				<p id="dayAfterTomorrow" class="card-text"></p> -->
 			</div>
 		</div>
 		</c:if>
